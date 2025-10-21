@@ -36,7 +36,16 @@ def compare_plot(x1:np.ndarray,y1:np.ndarray,x2:np.ndarray,y2:np.ndarray,
     matplotlib.pyplot.figure  
         Wykres porównujący dane (x1, y1) i (x2, y2), zgodny z opisem z zadania 3.  
     """
-    return None
+
+    if x1.shape != y1.shape or x1.shape != x2.shape or min(x1.shape)==0 or x2.shape != y2.shape or min(x2.shape)==0:
+        return None
+    fig, ax = plt.subplots()
+    ax.plot(x1, y1, 'b', linewidth=4, label=label1)
+    ax.plot(x2, y2, 'r', linewidth=2, label=label2)
+    ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
+    ax.legend()
+    return fig
+
 
 
 def parallel_plot(x1:np.ndarray,y1:np.ndarray,x2:np.ndarray,y2:np.ndarray,
@@ -76,7 +85,23 @@ def parallel_plot(x1:np.ndarray,y1:np.ndarray,x2:np.ndarray,y2:np.ndarray,
     matplotlib.pyplot.figure  
         Figura z dwoma wykresami (x1, y1) i (x2, y2), zgodna z opisem z zadania 5.  
     """
-    return None
+    if x1.shape != y1.shape or x1.shape != x2.shape or min(x1.shape)==0 or x2.shape != y2.shape or min(x2.shape)==0:
+        return None
+    
+    if orientation == '|':
+        fig, ax = plt.subplots(1,2)
+    elif orientation == '-':
+        fig, ax = plt.subplots(2,1)
+    else:
+        return None
+    ax[0].plot(x1, y1)
+    ax[0].set(xlabel = x1label, ylabel = y1label)
+    ax[1].plot(x2, y2)
+    ax[1].plot(xlabel = x2label, ylabel = y2label)
+    fig.suptitle(title)
+
+    return fig
+
 
 
 def log_plot(x:np.ndarray,y:np.ndarray,xlabel:np.ndarray,ylabel:str,title:str,log_axis:str):
@@ -107,5 +132,20 @@ def log_plot(x:np.ndarray,y:np.ndarray,xlabel:np.ndarray,ylabel:str,title:str,lo
     matplotlib.pyplot.figure  
         Wykres (x, y) ze skalą logarytmiczną, zgodny z opisem z zadania 7.  
     """
-    return None
+    if type(x) != type(y) or x.shape != y.shape or min(x.shape) == 0:
+        return None
+    
+    fig, ax = plt.subplots()
+
+    if log_axis == 'x':
+        ax.semilogx(x, y)
+    elif log_axis == 'y':
+        ax.semilogy(x, y)
+    elif log_axis == 'xy':
+        ax.loglog(x, y)
+    else:
+        return None
+    
+    ax.set(title = title, xlabel = xlabel, ylabel = ylabel)
+    return fig
 
